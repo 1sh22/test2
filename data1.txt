@@ -1,1 +1,116 @@
 test data 
+
+
+
+
+
+
+
+# 1. Decision Tree
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+x, y = iris.data, iris.target
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=0)
+
+clf = DecisionTreeClassifier()
+clf = clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+print("Decision Tree Accuracy:", accuracy_score(y_test, y_pred))
+
+# 2. KNN
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+
+df = pd.read_csv("data.csv")
+data = pd.DataFrame(df)
+x, y = data[["radius_mean", "texture_mean", "perimeter_mean", "area_mean"]], data["diagnosis"]
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+
+clf = KNeighborsClassifier(n_neighbors=5, metric="minkowski", p=2)
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("KNN Confusion Matrix:", cm)
+print("KNN Sensitivity:", cm[0, 0] / (cm[0, 0] + cm[0, 1]))
+print("KNN Specificity:", cm[1, 1] / (cm[1, 0] + cm[1, 1]))
+print("KNN Accuracy:", accuracy_score(y_test, y_pred))
+print("KNN Precision:", precision_score(y_test, y_pred, average=None))
+print("KNN Recall:", recall_score(y_test, y_pred, average=None))
+print("KNN F1 Score:", f1_score(y_test, y_pred, average=None))
+
+# 3. SVM
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+from sklearn import svm
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_csv("data.csv")
+data = pd.DataFrame(df)
+x, y = data[["radius_mean", "texture_mean", "perimeter_mean", "area_mean"]], data["diagnosis"]
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+clf = svm.SVC(kernel='linear')
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("SVM Confusion Matrix:", cm)
+print("SVM Accuracy:", accuracy_score(y_test, y_pred))
+print("SVM Precision:", precision_score(y_test, y_pred, average=None))
+print("SVM Recall:", recall_score(y_test, y_pred, average=None))
+
+# 4. Random Forest
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestClassifier
+
+df = pd.read_csv("data.csv")
+data = pd.DataFrame(df)
+x, y = data[["radius_mean", "texture_mean", "perimeter_mean", "area_mean"]], data["diagnosis"]
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+
+clf = RandomForestClassifier(n_estimators=10)
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("Random Forest Confusion Matrix:", cm)
+print("Random Forest Accuracy:", accuracy_score(y_test, y_pred))
+print("Random Forest Precision:", precision_score(y_test, y_pred, average='micro'))
+print("Random Forest Recall:", recall_score(y_test, y_pred, average='macro'))
+
+# 5. AdaBoost
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+from sklearn.ensemble import AdaBoostClassifier
+
+df = pd.read_csv("data.csv")
+data = pd.DataFrame(df)
+x, y = data[["radius_mean", "texture_mean", "perimeter_mean", "area_mean"]], data["diagnosis"]
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+
+clf = AdaBoostClassifier()
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("AdaBoost Confusion Matrix:", cm)
+print("AdaBoost Accuracy:", accuracy_score(y_test, y_pred))
+print("AdaBoost Precision:", precision_score(y_test, y_pred, average='macro'))
+print("AdaBoost Recall:", recall_score(y_test, y_pred, average='macro'))
